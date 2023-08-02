@@ -1,6 +1,7 @@
 //Algoritimo
 
 // [OK] 1. Pegar os valores
+// [OK] 1.1 Valida os dados dos Inputs
 // [OK]  2. Calcular a Idade
 // [OK]        a. Com base no ano
 // [OK]        b. Com mês (EXTRA)
@@ -15,9 +16,9 @@
    
 // [OK]  4. Organizar o objeto pessoa para salvar na lista
 // [OK]  5. Cadastrar a pessoa na lista
-// 6. Função para carregar as pessoas, carrega a lista do localStorage, chamar ao carregar a página
-// 7. Renderizar o conteúdo da tabela com as pessoas cadastradas
-// 8. Botão para limpar os registros;
+// [OK] 6. Função para carregar as pessoas, carrega a lista do localStorage, chamar ao carregar a página
+// [OK] 7. Renderizar o conteúdo da tabela com as pessoas cadastradas
+// [OK] 8. Botão para limpar os registros;
 
 function calcular(event){
     //Previni o recarregar da página
@@ -25,8 +26,8 @@ function calcular(event){
     console.log(receberValores())
     let usuario = receberValores();
 
-    //Verificar se contem erros no INPUTS
-    if(verificarErro(usuario.dia, usuario.mes, usuario.ano, usuario.nome) == false){
+    //Verificar se contem erros nos INPUTS
+    if(verificarErro(usuario) == false){
         return
     }
     //Calcula a idade com dia mes e ano
@@ -64,27 +65,30 @@ function receberValores(){
 
 //Passo 1.1 {VERIFICAR ERROS DE INPUTS}
 
-function verificarErro(dia_, mes_, ano_, nome_){
+function verificarErro(dadosUsuario_){
+
+    //variável data Recebe a data de Hoje
     let data = new Date();
-    if ((dia_ <= 0 || mes_ <= 0 || ano_ <= 0) || (dia_ == "" || mes_ == "" || ano_ == "" || nome_ == "" )){
-        console.log('Dia/Mês/Ano não pode ser menor que 0 ou em branco')
+    //Se os campos forem nulos ou igual/menor que 0
+    if ((dadosUsuario_.dia <= 0 || dadosUsuario_.mes <= 0 || dadosUsuario_.ano <= 0) || (dadosUsuario_.dia == "" || dadosUsuario_.mes == "" || dadosUsuario_.ano == "" || dadosUsuario_.nome == "" )){
+        console.log('os Campos [Nome] [Dia]/[Mês]/[Ano] não pode ser menor que 0 ou em branco')
         return false
     } else{
-        if(dia_ > 31){
+        //Se o dia for maior que 31 -> mes maior que 13 e ano maior que o ano atual
+        if(dadosUsuario_.dia > 31){
             alert('O dia de nascimento não pode ser maior que 31')
             return false
-        }else if(mes_ > 12){
+        }else if(dadosUsuario_.mes> 12){
             alert('O mês de nascimento não pode ser maior que 12')
             return false
-        }else if(ano_ > new Date().getFullYear()){
+        }else if(dadosUsuario_.ano> data.getFullYear()){
             alert('O ano de nascimento não pode ser maior que o ano atual')
             return false
-            
-        }else if( (ano_ == data.getFullYear()) && ((mes_ > data.getMonth() /*|| (mes_ == data.getMonth() && dia_ >= data.getDate())*/)) ){
-            alert('A data de nascimento não pode ser maior que a data atual')
+        //Se o ano de nascimento É IGUAL a este ano E (o mes de niver MAIOR que este mes OU (mes de niver IGUAL a este mês E dia Nascimento MAIOR que dia de HOJE))   
+        }else if( dadosUsuario_.ano == data.getFullYear() && ((dadosUsuario_.mes> data.getMonth()+1) || ( (dadosUsuario_.mes == data.getMonth()+1 && dadosUsuario_.dia > data.getDate()) )) ){
+            alert('A data de nascimento não pode ser maior que hoje')
             return false
         }
-        
     }
     return true;
 }
