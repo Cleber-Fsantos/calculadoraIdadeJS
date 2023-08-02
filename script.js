@@ -95,7 +95,6 @@ function verificarErro(dadosUsuario_){
 
 //Passo 2
 function calcularIdade(diaNascimento_, mesNascimento_, anoNascimento_){
-    // let anoAtual = new Date().getFullYear();
     let dataCompletaAtual = new Date();
     let dataAtual = {
         dia: dataCompletaAtual.getDate(),
@@ -107,7 +106,8 @@ function calcularIdade(diaNascimento_, mesNascimento_, anoNascimento_){
     let idade = dataAtual.ano - anoNascimento_;
 
     //se o mês atual for igual/menor que o de aniversário e o dia < que o de aniversario => Ano -1
-    if((dataAtual.mes <= mesNascimento_)&&(dataAtual.dia < diaNascimento_)){
+
+    if((dataAtual.mes < mesNascimento_) || (dataAtual.mes == mesNascimento_ && (dataAtual.dia < diaNascimento_))){
         idade --;
     }
     console.log(idade)
@@ -182,13 +182,16 @@ window.addEventListener("DOMContentLoaded", () => carregarUsuarios());
 
 function montarTabela(listaUsuarios_){
     let tabela = document.getElementById("corpo-tabela");
+    let data = "";
 
     let template = "";
 
     listaUsuarios_.forEach(usuario => {
+        data = `${usuario.dia}/${usuario.mes}/${usuario.ano}`
+        
         template += `<tr>
             <td data-cell="nome">${usuario.nome}</td>
-            <td data-cell="data de nascimento">${usuario.dia}/${usuario.mes}/${usuario.ano}</td>
+            <td data-cell="data de nascimento">${data}</td>
             <td data-cell="idade">${usuario.idade} anos</td>
              <td data-cell="faixa etária">${usuario.faixa}</td>
         </tr>`
